@@ -86,27 +86,26 @@ def save_to_mongo(quotes_file,authors_file):
     with open(quotes_file,'r',encoding='utf-8') as f:
         quotes = json.load(f)
         result = db.quotes.insert_many(quotes)
-        print(result)
-    print('load_authors')
     with open(authors_file,'r',encoding='utf-8') as f:
         authors = json.load(f)
         result = db.authors.insert_many(authors)
-        print(result)
 
 
-def main():
+def scrapping(quotes_file,authors_file):
+    print('get_quotes')
     quotes, authors_url = get_quotes()
-    with open('quotes.json','w',encoding='utf-8') as f:
+    with open(quotes_file,'w',encoding='utf-8') as f:
         json.dump(quotes,f,ensure_ascii=False,indent=4)
     print('get_authors')
     authors = get_authors(authors_url)
-    with open('authors.json','w',encoding='utf-8') as f:
+    with open(authors_file,'w',encoding='utf-8') as f:
         json.dump(authors,f,ensure_ascii=False,indent=4)
 
 
 
 if __name__ == '__main__':
-    #main()
+    scrapping('quotes.json','authors.json')
+    print('Save to mongo')
     save_to_mongo('quotes.json','authors.json')
 
 
